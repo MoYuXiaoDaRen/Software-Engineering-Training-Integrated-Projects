@@ -22,6 +22,7 @@ def process_img(files):
         file_storage = f.read()
         byte_stream = io.BytesIO(file_storage)
         img = Image.open(byte_stream)
+        img = img.convert('RGB')
         img = ImageOps.fit(img, (HEIGHT, WIDTH), Image.ANTIALIAS)
         img_data = np.asarray(img, dtype=np.float32)
         img_data = img_data / 127.0 - 1
