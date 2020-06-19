@@ -407,26 +407,12 @@
                 <br>
                 &nbsp;The TFLite mobilenet example works with the teachable machine model.
                 <br><br>
-                &nbsp;1. Get the project from <a href="https://github.com/tensorflow/examples/tree/master/lite/examples/image_classification/android" target="_blank">github</a>
+                &nbsp;1. Get the project from <a href="https://github.com/MoYuXiaoDaRen/Software-Engineering-Training-Integrated-Projects/tree/master/Teachable%20Machine/tflite_demo" target="_blank">github</a>
                 <br><br>
-                &nbsp;2. Put your downloadmodel into app/src/assets
+                &nbsp;2. Put your downloadmodel and label into app/src/main/assets
                 <br><br>
-
-                &nbsp;3. Create/update labels.txt in app/src/assets<br><br>
-                &nbsp;4. Change the default model type in CameraActivity.java in android/app/src/main/java/org/tensorflow/lite/examples/classfication/<br><br>
-
-                &nbsp;from <br><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;private Model model = Model.QUANTIZED;<br><br>
-
-                &nbsp;to<br><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;private Model model = Model.FLOAT;<br><br>
-                &nbsp;5. Change ClasffierFloatMobileNet.java in android/app/src/main/java/org/tensorflow/lite/examples/classification/tflite/<br><br>
-                &nbsp;from<br><br>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;return "mobilenet_v1_1.0_224.tflite";<br><br>
-                &nbsp;to<br><br>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;return "model_unquant.tflite";<br><br>
+                &nbsp;3. Open project in Android Studio and wait for building.
+                <br><br>
               </div>
               <div>
               <button
@@ -492,7 +478,8 @@
   .text11{
     position: relative;
     width: 670px;
-    overflow-y: scroll;
+    height: 610px;
+    overflow-y: auto;
     overflow-x: hidden;
   }
   .text2{
@@ -1313,6 +1300,7 @@ export default {
               alert('ERROR! The ID you entered already exists.')
             } else if (res.data === 'TRUE') {
               this.check_ID_pass = true
+              this.train_disable = !this.check_train()
             }
           })
           .catch((error) => {
@@ -1446,7 +1434,7 @@ export default {
       let valid_drop_index2 = get_valid_indexs(class2_drop_imgs)
       let valid_web_index1 = get_valid_indexs(class1_web_imgs)
       let valid_web_index2 = get_valid_indexs(class2_web_imgs)
-      return (valid_input_index1.length !== 0 || valid_drop_index1.length !== 0 || valid_web_index1.length !== 0) && (valid_input_index2.length !== 0 || valid_drop_index2.length !== 0 || valid_web_index2.length !== 0) && (this.label1_value !== '' && this.label2_value !== '')
+      return this.check_ID_pass && (valid_input_index1.length !== 0 || valid_drop_index1.length !== 0 || valid_web_index1.length !== 0) && (valid_input_index2.length !== 0 || valid_drop_index2.length !== 0 || valid_web_index2.length !== 0) && (this.label1_value !== '' && this.label2_value !== '')
     },
     label_change () {
       this.train_disable = !this.check_train()
