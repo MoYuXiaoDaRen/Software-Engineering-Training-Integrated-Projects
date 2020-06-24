@@ -57,7 +57,7 @@
           </div>
           <div class="file-box" v-show="!is_camera1">
             <span class="mode-text">Files</span>
-            <div class="dropBox" id="dropBox1" :disabled="!check_ID_pass">
+            <div class="dropBox" id="dropBox1">
               <img src="../assets/文件.png" class="folder_img">
               <div class="drap-content">Drag images file from your files</div>
             </div>
@@ -123,7 +123,7 @@
           </div>
           <div class="file-box" v-show="!is_camera2">
             <span class="mode-text">Files</span>
-            <div class="dropBox" id="dropBox2" :disabled="!check_ID_pass">
+            <div class="dropBox" id="dropBox2">
               <img src="../assets/文件.png" class="folder_img">
               <div class="drap-content">Drag images file from your files</div>
             </div>
@@ -407,7 +407,7 @@
                 <br>
                 &nbsp;The TFLite mobilenet example works with the teachable machine model.
                 <br><br>
-                &nbsp;1. Get the project from <a href="https://github.com/MoYuXiaoDaRen/Software-Engineering-Training-Integrated-Projects/tree/master/Teachable%20Machine/tflite_demo" target="_blank">github</a>
+                &nbsp;1. Get the project from <a href="https://github.com/MoYuXiaoDaRen/Software-Engineering-Training-Integrated-Projects/tree/master/Teachable%20Machine/tflite_demo" target="_blank">Github</a>
                 <br><br>
                 &nbsp;2. Put your downloadmodel and label into app/src/main/assets
                 <br><br>
@@ -430,6 +430,10 @@
 </template>
 
 <style scoped>
+  #img_classifier{
+    height: 1000px;
+    overflow: hidden;
+  }
   .all {
     position: fixed;
     width: 100%;
@@ -815,8 +819,8 @@
   }
   #preview{
     position: relative;
-    bottom: 1200px;
-    left: 800px;
+    bottom: 1250px;
+    left: 780px;
     width:300px;
     height:800px;
     background-color: white;
