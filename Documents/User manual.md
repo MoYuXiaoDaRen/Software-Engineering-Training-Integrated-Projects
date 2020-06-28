@@ -78,6 +78,14 @@ Users have three ways to upload images:
 
    ![07](md_img\07.png)
 
+If user wants to delete the image uploaded to the web page, he or she can click the corresponding image to delete it. 
+
+如果用户想要删除已上传到网页上的图片，可以点击对应图片进行删除。
+
+![13](md_img\13.png)
+
+![14](md_img\14.png)
+
 ### Training model（训练模型）
 
 Only when the user has filled in the class name and uploaded images can he or she click the **Train Model** button. 
