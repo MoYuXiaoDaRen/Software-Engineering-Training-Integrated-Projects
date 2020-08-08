@@ -5,7 +5,7 @@ import ImageClassifier from '@/components/ImageClassifier'
 import SoundClassifier from '@/components/SoundClassifier'
 import PoseClassifier from '@/components/PoseClassifier'
 
-import Helloworld from '@/components/HelloWorld'
+import Helloworld from '@/components/test'
 
 Vue.use(Router)
 

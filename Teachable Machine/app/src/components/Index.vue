@@ -11,7 +11,7 @@
           <span class="subContext">files or your webcam.</span>
         </div>
       </div>
-      <div class="notClick_wrapper" onclick="window.open('./SoundClassifier')" id="soundClassifier">
+      <div class="wrapper" onclick="window.open('./ImageClassifier')" id="soundClassifier">
         <img src="../assets/sample1 (1).jpg">
         <img src="../assets/sample2 (1).jpg">
         <span class="subTitle">Sound Project</span>
@@ -20,7 +20,7 @@
           <span class="subContext">sounds, from your microphone.</span>
         </div>
       </div>
-      <div class="notClick_wrapper" onclick="window.open('./PoseClassifier')" id="poseClassifier" disabled="isDisable">
+      <div class="wrapper" onclick="window.open('./ImageClassifier')" id="poseClassifier">
         <img src="../assets/sample1 (2).jpg">
         <img src="../assets/sample2 (2).jpg">
         <span class="subTitle">Pose Project</span>
@@ -35,12 +35,7 @@
 
 <script>
 export default {
-  name: 'Index',
-  data () {
-    return {
-      isDisable: true
-    }
-  }
+  name: 'Index'
 }
 </script>
 
@@ -59,20 +54,6 @@ export default {
     height: 400px;
     position: absolute;
     top: 120px;
-  }
-  .notClick_wrapper{
-    background-color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    width: 270px;
-    height: 270px;
-    overflow: hidden;
-    transition: 0.5s;
-    position: relative;
-    left: 30px;
-    float: left;
-    margin: 40px 30px;
-    pointer-events: none;
   }
   .wrapper{
     background-color: white;
