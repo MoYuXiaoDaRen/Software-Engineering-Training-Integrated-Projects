@@ -1262,6 +1262,10 @@ export default {
                 let id_str = evt.target.id
                 let actual_index_str = id_str.charAt(id_str.length - 1)
                 let class_index = parseInt(actual_index_str) - 1
+                if (__this.class_count >= 10) {
+                  actual_index_str = id_str.substr(id_str.length - 2, 2)
+                  class_index = parseInt(actual_index_str) - 1
+                }
                 my_img.attr('class', 'class' + actual_index_str + '_drop')
                 my_img.attr('id', 'imgDrop' + actual_index_str + '_' + __this.drop_index_list[class_index])
                 $('#img-wrapper' + actual_index_str).append(my_img)
@@ -1279,7 +1283,6 @@ export default {
     },
     // 添加一个类别
     addClass () {
-      let array_index = this.class_count
       this.class_count += 1
       this.setting_bottom += 250
       this.preview_bottom += 300
@@ -1594,6 +1597,9 @@ export default {
       } else {
         let id_str = e.target.id
         let actual_index_str = id_str.charAt(id_str.length - 1)
+        if (this.class_count >= 10) {
+          actual_index_str = id_str.charAt(id_str.length - 2) + actual_index_str
+        }
         return $('#upload_file' + actual_index_str).click()
       }
     },
@@ -1614,6 +1620,10 @@ export default {
           let id_str = target.id
           let actual_index_str = id_str.charAt(id_str.length - 1)
           let class_index = parseInt(actual_index_str) - 1
+          if (this.class_count >= 10) {
+            actual_index_str = id_str.charAt(id_str.length - 2) + actual_index_str
+            class_index = parseInt(actual_index_str) - 1
+          }
           my_img.attr('id', 'imgInput' + actual_index_str + '_' + this.input_index_list[class_index])
           this.input_index_list[class_index] += 1
           my_img.attr('class', 'class' + actual_index_str + '_input')
