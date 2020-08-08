@@ -71,7 +71,7 @@
               <div class="upload_btn_div">
                 <button
                 class="upload_btn"
-                @click="change_input($event)"
+                @click="change_input(index + 1)"
                 :id="'btn' + (index + 1)"
                 :disabled="!check_ID_pass">
                 Upload Images
@@ -248,7 +248,7 @@
           <div class="upload_btn_div1">
             <button
             class="upload_btn"
-            @click="change_input($event)"
+            @click="change_input('fileOne_btn')"
             id="fileOne_btn"
             :disabled="export_disable">
             Upload Images
@@ -1260,9 +1260,10 @@ export default {
                 my_img.attr('name', theFile.name)
                 my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
                 let id_str = evt.target.id
+                let str_length = id_str.length
                 let actual_index_str = id_str.charAt(id_str.length - 1)
                 let class_index = parseInt(actual_index_str) - 1
-                if (__this.class_count >= 10) {
+                if (str_length == 9) {
                   actual_index_str = id_str.substr(id_str.length - 2, 2)
                   class_index = parseInt(actual_index_str) - 1
                 }
@@ -1592,15 +1593,10 @@ export default {
     },
     // 根据点击上传按钮触发input
     change_input (e) {
-      if (e.target.id === 'fileOne_btn') {
+      if (e === 'fileOne_btn') {
         return $('#fileOne').click()
       } else {
-        let id_str = e.target.id
-        let actual_index_str = id_str.charAt(id_str.length - 1)
-        if (this.class_count >= 10) {
-          actual_index_str = id_str.charAt(id_str.length - 2) + actual_index_str
-        }
-        return $('#upload_file' + actual_index_str).click()
+        return $('#upload_file' + e).click()
       }
     },
 
@@ -1618,10 +1614,11 @@ export default {
           my_img.attr('name', target.files[i].name)
           my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'})
           let id_str = target.id
+          let str_length = id_str.length
           let actual_index_str = id_str.charAt(id_str.length - 1)
           let class_index = parseInt(actual_index_str) - 1
-          if (this.class_count >= 10) {
-            actual_index_str = id_str.charAt(id_str.length - 2) + actual_index_str
+          if (str_length == 13) {
+            actual_index_str = id_str.substr(id_str.length - 2, 2)
             class_index = parseInt(actual_index_str) - 1
           }
           my_img.attr('id', 'imgInput' + actual_index_str + '_' + this.input_index_list[class_index])
