@@ -1229,8 +1229,10 @@ export default {
   // 定义事件
   methods: {
     addFunction (__this) {
-      // TODO 添加摄像头
-
+      // 添加摄像头
+      __this.video_list[__this.class_count - 1] = document.getElementById('class' + __this.class_count + '_video')
+      __this.video_list[__this.class_count - 1].srcObject = __this.video_list[0].srcObject
+      __this.video_list[__this.class_count - 1].play()
       // 添加拖放事件
       console.log('dropBox' + __this.class_count)
       let boxed = document.getElementById('dropBox' + __this.class_count)
@@ -1363,15 +1365,13 @@ export default {
             } else if (res.data === 'TRUE') {
               this.check_ID_pass = true
               this.train_disable = !this.check_train()
-              console.log(this.video_list)
               for (let i = 1; i <= this.class_count; i++) {
                 this.video_list[i - 1] = document.getElementById('class' + i + '_video')
               }
-              console.log(this.video_list)
               this.thisCancas = document.getElementById('_canvas')
               this.thisContext = this.thisCancas.getContext('2d')
               this.thisVideo = document.getElementById('_video')
-
+              let __this = this
               if (navigator.mediaDevices.getUserMedia) {
                 // 最新的标准API
                 navigator.mediaDevices.getUserMedia({video: {width: 1280, height: 720}}).then(success).catch(error)
@@ -1391,16 +1391,16 @@ export default {
                 // let CompatibleURL = window.URL || window.webkitURL;
 
                 // 将视频流设置为video元素的源
-                for (let i = 0; i < _this.video_list.length; i++) {
-                  _this.video_list[i].srcObject = stream
-                  _this.video_list[i].play()
+                for (let i = 0; i < __this.video_list.length; i++) {
+                  __this.video_list[i].srcObject = stream
+                  __this.video_list[i].play()
                 }
-                _this.thisVideo.srcObject = stream
-                _this.thisVideo.play()
+                __this.thisVideo.srcObject = stream
+                __this.thisVideo.play()
               }
 
               function error (error) {
-                alert(`访问用户媒体设备失败${error.name}, ${error.message}`)
+                alert(`访问用户媒体设备失败 ${error.name}, ${error.message}`)
               }
             }
           })
