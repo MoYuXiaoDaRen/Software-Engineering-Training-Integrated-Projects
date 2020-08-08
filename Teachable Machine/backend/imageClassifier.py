@@ -21,7 +21,7 @@ def create_model(h, w, c):
 '''
 
 
-def create_model(h, w, c):
+def create_model(h, w, c, class_count):
     model = models.Sequential()
     model.add(layers.Conv2D(6, (5, 5), padding='same', input_shape=(h, w, c)))
     model.add(layers.BatchNormalization())
@@ -31,14 +31,14 @@ def create_model(h, w, c):
     model.add(layers.Flatten())
     model.add(layers.Dense(128, activation='relu'))
     model.add(layers.Dropout(0.2))
-    model.add(layers.Dense(2, activation='softmax'))
+    model.add(layers.Dense(class_count, activation='softmax'))
     return model
 
 
-def training(input_data, label, epoch, batch_size, learning_rate, user_id):
+def training(input_data, label, epoch, batch_size, learning_rate, user_id, class_count):
     backend.clear_session()
     _, h, w, c = input_data.shape
-    model = create_model(h, w, c)
+    model = create_model(h, w, c, class_count)
     optimizer = optimizers.Adam(learning_rate=learning_rate)
     model.compile(optimizer=optimizer,
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -55,6 +55,7 @@ def prediction(input_data, user_id):
     # probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])
     # predict = probability_model.predict(input_data)
     predict = model.predict(input_data)
+    print(predict)
     return predict
 
 

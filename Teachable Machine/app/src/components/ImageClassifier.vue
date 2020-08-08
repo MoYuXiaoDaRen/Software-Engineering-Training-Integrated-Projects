@@ -19,143 +19,106 @@
         Check ID
       </el-button>
     </div>
-    <div class="class-box" id="box1">
-      <div class="label-box">
-        <el-input
-          class="label-name"
-          id="label1"
-          placeholder="Please enter Class1 label"
-          prefix-icon="el-icon-edit"
-          v-model="label1_value"
-          @change="label_change()"
-          :disabled="!check_ID_pass"
-          clearable>
-        </el-input>
-      </div>
-      <div class="choose-show-box">
-        <div class="mode-box">
-          <el-switch
-            @change="changeMode('class1-change')"
-            class="change-mode"
-            id="class1-change"
-            v-model="is_camera1"
-            active-text="Webcam"
+    <div id="all_class" v-for="(label, index) in labels_list">
+      <div class="class-box" :id="'box' + (index + 1)">
+        <div class="label-box">
+          <el-input
+            class="label-name"
+            :id="'label' + (index + 1)"
+            :placeholder="'Please enter Class' + (index + 1) + ' label'"
+            prefix-icon="el-icon-edit"
+            v-model="labels_list[index]"
+            @change="label_change()"
             :disabled="!check_ID_pass"
-            inactive-text="Upload">
-          </el-switch>
-          <div class="webcam-box" v-show="is_camera1">
-            <span class="mode-text">Webcam</span>
-            <video class="webcam-display" id="class1_video"></video>
-            <canvas hidden="hidden" class="canvas-display" id="class1_canvas"  width="1280px" height="720px"></canvas>
-            <button
-              class="b1"
-              @click="setImage1()"
-              id="drawb1"
-              :disabled="!check_ID_pass">
-              Photograph
-            </button>
-          </div>
-          <div class="file-box" v-show="!is_camera1">
-            <span class="mode-text">Files</span>
-            <div class="dropBox" id="dropBox1">
-              <img src="../assets/文件.png" class="folder_img">
-              <div class="drap-content">Drag images file from your files</div>
-            </div>
-            <div class="upload_btn_div">
+            clearable>
+          </el-input>
+        </div>
+        <div class="choose-show-box">
+          <div class="mode-box">
+            <el-switch
+              @change="changeMode(index + 1)"
+              class="change-mode"
+              id="class1-change"
+              v-model="is_camera_list[index]"
+              active-text="Webcam"
+              :disabled="!check_ID_pass"
+              inactive-text="Upload">
+            </el-switch>
+            <div class="webcam-box" v-show="is_camera_list[index]">
+              <span class="mode-text">Webcam</span>
+              <video class="webcam-display" :id="'class' + (index + 1) + '_video'"></video>
+              <canvas
+                hidden="hidden"
+                class="canvas-display"
+                :id="'class' + (index + 1) + '_canvas'"
+                width="1280px"
+                height="720px"></canvas>
               <button
-              class="upload_btn"
-              @click="change_input($event)"
-              id="btn1"
-              :disabled="!check_ID_pass">
-              Upload Images
+                class="b1"
+                @click="drawImg(index + 1)"
+                :disabled="!check_ID_pass">
+                Photograph
               </button>
             </div>
-            <div class="pre_img_decript">
-              <div class="img_div">
-                <img src="../assets/图片2.png" class="file-box-imgs">
-                <img src="../assets/箭头.png" class="file-box-imgs">
-                <img src="../assets/图片2.png" class="file-box-imgs">
-                <div class="crop_size"></div>
+            <div class="file-box" v-show="!is_camera_list[index]">
+              <span class="mode-text">Files</span>
+              <div class="dropBox"
+                   :id="'dropBox' + (index + 1)"
+                   :disabled="!check_ID_pass">
+                <img src="../assets/文件.png" class="folder_img">
+                <div class="drap-content">Drag images file from your files</div>
               </div>
-              <div class="crop_decript">Images will be cropped to square</div>
+              <div class="upload_btn_div">
+                <button
+                class="upload_btn"
+                @click="change_input($event)"
+                :id="'btn' + (index + 1)"
+                :disabled="!check_ID_pass">
+                Upload Images
+                </button>
+              </div>
+              <div class="pre_img_decript">
+                <div class="img_div">
+                  <img src="../assets/图片2.png" class="file-box-imgs">
+                  <img src="../assets/箭头.png" class="file-box-imgs">
+                  <img src="../assets/图片2.png" class="file-box-imgs">
+                  <div class="crop_size"></div>
+                </div>
+                <div class="crop_decript">Images will be cropped to square</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="show-box">
-          <div class="show-description">
-            Add Images Samples:
+          <div class="show-box">
+            <div class="show-description">
+              Add Images Samples:
+            </div>
+            <form :id="'class' + (index + 1) + '_form'">
+              <div class="img-wrapper"
+                   :id="'img-wrapper' + (index + 1)"
+                   @click="deleteImg($event)">
+              </div>
+            </form>
           </div>
-          <form id="class1_form">
-            <div class="img-wrapper" id="img-wrapper1" @click="deleteImg($event)"></div>
-          </form>
         </div>
       </div>
     </div>
-    <div class="class-box" id="box2">
-      <div class="label-box">
-        <el-input
-          class="label-name"
-          id="label2"
-          placeholder="Please enter Class2 label"
-          prefix-icon="el-icon-edit"
-          @change="label_change()"
-          v-model="label2_value"
-          :disabled="!check_ID_pass"
-          clearable>
-        </el-input>
-      </div>
-      <div class="choose-show-box">
-        <div class="mode-box">
-          <el-switch
-            class="change-mode"
-            @change="changeMode('class2-change')"
-            id="class2-change"
-            v-model="is_camera2"
-            active-text="Webcam"
-            :disabled="!check_ID_pass"
-            inactive-text="Upload">
-          </el-switch>
-          <div class="webcam-box" v-show="is_camera2">
-            <span class="mode-text">Webcam</span>
-            <video class="webcam-display" id="class2_video"></video>
-            <canvas hidden="hidden" class="canvas-display" id="class2_canvas"    width="1280px" height="720px"></canvas>
-            <button class="b1" @click="setImage2()" id="drawb2">Photograph</button>
-          </div>
-          <div class="file-box" v-show="!is_camera2">
-            <span class="mode-text">Files</span>
-            <div class="dropBox" id="dropBox2">
-              <img src="../assets/文件.png" class="folder_img">
-              <div class="drap-content">Drag images file from your files</div>
-            </div>
-            <div class="upload_btn_div">
-              <button
-              class="upload_btn"
-              @click="change_input($event)"
-              id="btn2"
-              :disabled="!check_ID_pass">
-              Upload Image
-              </button>
-            </div>
-            <div class="pre_img_decript">
-              <div class="img_div">
-                <img src="../assets/图片2.png" class="file-box-imgs">
-                <img src="../assets/箭头.png" class="file-box-imgs">
-                <img src="../assets/图片2.png" class="file-box-imgs">
-                <div class="crop_size"></div>
-              </div>
-              <div class="crop_decript">Images will be cropped to square</div>
-            </div>
-          </div>
-        </div>
-        <div class="show-box">
-          <div class="show-description">
-            Add Images Samples:
-          </div>
-          <form id="class2_form">
-            <div class="img-wrapper" id="img-wrapper2" @click="deleteImg($event)"></div>
-          </form>
-        </div>
-      </div>
+    <div id="add_and_delete_btn">
+      <el-button
+        type="danger"
+        round
+        id="delete_btn"
+        :disabled="!check_ID_pass"
+        @click="deleteClass()">
+        Delete the last class
+      </el-button>
+      <el-button
+        type="primary"
+        round
+        id="add_btn"
+        :disabled="!check_ID_pass"
+        @click="addClass()">
+        Add a new class
+      </el-button>
     </div>
     <form id="addTextForm" @change="setImg($event)">
       <input type='file' class="upload_file" multiple id="upload_file1" accept = 'image/jpeg,image/jpg,image/png,image/bmp'/>
@@ -274,19 +237,19 @@
         </div>
         <div class="choose-box" v-show="is_cam">
           <video class="webcam-display1" id="_video"></video>
-          <button class="b2" @click="setImage3()" :disabled="export_disable">Photograph</button>
+          <button class="b2" @click="drawImg('predict')" :disabled="export_disable">Photograph</button>
           <canvas hidden="hidden" class="canvas-display1" id="_canvas"   width="1280px" height="720px"></canvas>
-          <img id="img-wrapper4">
+          <img id="img-wrapperWeb">
         </div>
         <div class="choose-box" v-show="!is_cam">
           <div class="img-wrapper">
-            <img id="img-wrapper3">
+            <img id="img-wrapperUp">
           </div>
           <div class="upload_btn_div1">
             <button
             class="upload_btn"
             @click="change_input($event)"
-            id="btn3"
+            id="fileOne_btn"
             :disabled="export_disable">
             Upload Images
             </button>
@@ -309,20 +272,19 @@
         </div>
       </div>
       <div id="progress_div">
-        <span class="class-text">Output</span>
-        <div class="pre_outcome">
-          <div id="class_text1">{{ label1_value }}:</div>
-          <div class="Bar1">
-            <div id="orange1">
-              <div id="orangename1">0%</div>
+        <div class="class-text">Output</div>
+        <div v-for="(label, index) in labels_list">
+          <div class="pre_outcome" :id="'pre_div' + (index + 1)">
+            <div class="class_text1">{{ labels_list[index] }}:</div>
+            <div v-if="index % 2 === 0" class="Bar1">
+              <div :id="'outcome' + (index + 1)" class="orange">
+                <div :id="'outcomename' + (index + 1)" class="orangename">0%</div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="pre_outcom">
-          <div id="class_text2">{{ label2_value }}:</div>
-          <div class="Bar2">
-            <div id="orange2">
-              <div id="orangename2">0%</div>
+            <div v-else class="Bar2">
+              <div :id="'outcome' + (index + 1)" class="red">
+                <div :id="'outcomename' + (index + 1)" class="redname">0%</div>
+              </div>
             </div>
           </div>
         </div>
@@ -407,7 +369,7 @@
                 <br>
                 &nbsp;The TFLite mobilenet example works with the teachable machine model.
                 <br><br>
-                &nbsp;1. Get the project from <a href="https://github.com/MoYuXiaoDaRen/Software-Engineering-Training-Integrated-Projects/tree/master/Teachable%20Machine/tflite_demo" target="_blank">Github</a>
+                &nbsp;1. Get the project from <a href="https://github.com/MoYuXiaoDaRen/Software-Engineering-Training-Integrated-Projects/tree/master/Teachable%20Machine/tflite_demo" target="_blank">github</a>
                 <br><br>
                 &nbsp;2. Put your downloadmodel and label into app/src/main/assets
                 <br><br>
@@ -429,11 +391,14 @@
   </div>
 </template>
 
-<style scoped>
-  #img_classifier{
-    height: 1000px;
-    overflow: hidden;
+<style>
+  .upload_file{
+    width: 0;
+    height: 0;
   }
+</style>
+
+<style scoped>
   .all {
     position: fixed;
     width: 100%;
@@ -553,10 +518,10 @@
     padding: 1px;
     background-color: #ffebd3;
     border-radius: 8px;
-    top: 50px;
-    left: 30px;
+    top: 15px;
+    left: 10px;
   }
-  #orange1{
+  .orange{
     width: 0%;
     display: block;
     position: relative;
@@ -564,26 +529,25 @@
     height: 20px;
     border-radius: 8px;
   }
-  #orangename1{
+  .orangename{
     position: relative;
     width: 35px;
     color: white;
     text-align: center;
     font-weight: bold;
-    top: -1px;
   }
 
   .Bar2{
     position: relative;
     width: 200px;
-    border: 1px solid orange;
+    border: 1px solid red;
     padding: 1px;
     background-color: #ffe9ec;
     border-radius: 8px;
-    top: 65px;
-    left: 30px;
+    top: 15px;
+    left: 10px;
   }
-  #orange2{
+  .red{
     width: 0%;
     display: block;
     position: relative;
@@ -591,7 +555,7 @@
     height: 20px;
     border-radius: 8px;
   }
-  #orangename2{
+  .redname{
     color: white;
     position: relative;
     width: 35px;
@@ -655,8 +619,7 @@
   }
   .class-text{
     position: relative;
-    float: left;
-    left: 20px;
+    right: 110px;
     top: 5px;
     color: grey;
     font-size: 20px;
@@ -741,7 +704,7 @@
     height: 340px;
     text-align: left;
   }
-  #img-wrapper3{
+  #img-wrapperUp{
     position: relative;
     top: 60px;
     right: -45px;
@@ -750,7 +713,7 @@
     background-color: #d5e9ff;
     border-radius: 10px;
   }
-  #img-wrapper4{
+  #img-wrapperWeb{
     position: relative;
     top: 70px;
     width: 150px;
@@ -819,10 +782,9 @@
   }
   #preview{
     position: relative;
-    bottom: 1250px;
-    left: 780px;
+    bottom: 1200px;
+    left: 800px;
     width:300px;
-    height:800px;
     background-color: white;
     border-radius: 20px;
   }
@@ -976,22 +938,13 @@
     width: 130px;
     text-align: left;
   }
-  #class_text1{
+  .class_text1{
     font-weight: bold;
     color: #b4d8ff;
     position: relative;
     text-align: left;
-    right: 45px;
-    top: 40px;
-    max-width: 280px;
-  }
-  #class_text2{
-    font-weight: bold;
-    color: #b4d8ff;
-    position: relative;
-    text-align: left;
-    left: 20px;
-    top: 60px;
+    left: 10px;
+    top: 10px;
     max-width: 280px;
   }
   #reset_btn{
@@ -1146,11 +1099,10 @@
   }
   #progress_div{
     width: 300px;
-    height: 200px;
   }
   .pre_outcome{
     width: 300px;
-    height: 50px;
+    height: 70px;
   }
   #pre_btn_div{
     width: 300px;
@@ -1173,6 +1125,20 @@
     cursor: not-allowed;
     background: #EDEDED;
     color: #bcbcbc;
+  }
+  #add_and_delete_btn{
+    width: 400px;
+    position: relative;
+    left: 20px;
+  }
+  #delete_btn{
+    width: 100%;
+  }
+  #add_btn{
+    width: 100%;
+    position: relative;
+    left: -10px;
+    top: 20px;
   }
 </style>
 
@@ -1232,62 +1198,154 @@ export default {
     return {
       user_ID: '', // 用于多用户标识
       check_ID_pass: false, // ID是否有重复
-      class1_input_index: 0, // class1的input照片下标
-      class2_input_index: 0, // class2的input照片下标
-      class1_input_file: [], // class1的input照片全部文件（包含删除的）
-      class2_input_file: [], // class2的input照片全部文件（包含删除的）
-      class1_drop_index: 0, // class1的drop照片下标
-      class2_drop_index: 0, // class2的drop照片下标
-      class1_drop_file: [], // class1的drop照片全部文件（包含删除的）
-      class2_drop_file: [], // class2的drop照片全部文件（包含删除的）
-      class1_web_index: 0,
-      class2_web_index: 0,
-      class1_web_file: [], // class1的web照片全部文件（包含删除的）
-      class2_web_file: [], // class2的web照片全部文件（包含删除的）
-      is_camera1: false, // class1切换拍照或者本地选择
-      is_camera2: false, // class2切换拍照或者本地选择
+      class_count: 0, // 类别总数
+      input_index_list: [], // 每个class的input照片下标, 每个元素为int
+      input_file_list: [], // 每个class的input照片全部文件（包含删除的）, 每个元素为[]
+      drop_index_list: [], // 每个class的drop照片下标, 每个元素为int
+      drop_file_list: [], // 每个class的drop照片全部文件（包含删除的）, 每个元素为[]
+      web_index_list: [], // 每个class的web照片下标, 每个元素为int
+      web_file_list: [], // 每个class的web照片全部文件（包含删除的）, 每个元素为[]
+      is_camera_list: [], // 切换拍照或者本地选择, 每个元素为bool
       is_cam: false,
-      label1_value: 'Class1', // 类别1名称
-      label2_value: 'Class2', // 类别2名称
+      labels_list: [], // 存放类别名称, 每个元素为string
       train_disable: true, // 控制训练按钮是否可用
       export_disable: true, // 控制导出按钮是否可用
       predict_disable: true, // 控制预测按钮是否可用
-      imgSrc1: '',
-      imgSrc2: '',
-      thisCancas1: null,
-      thisCancas2: null,
-      thisContext1: null,
-      thisContext2: null,
-      thisVideo1: null,
-      thisVideo2: null,
+      video_list: [], // 存放每个class摄像头显示的标签, 每个元素为null
       imgSrc: '',
       thisCancas: null,
       thisContext: null,
       thisVideo: null,
-      class1_orange: 0,
-      class2_orange: 0,
-      class1_orangename: null,
-      class2_orangename: null,
       predict_upload_file: null,
       predict_web_file: null,
       waiting_display: false,
       export_type: '',
       popup: false,
-      can_clear: true
+      can_clear: true,
+      setting_bottom: 650,
+      preview_bottom: 1200
     }
   },
   // 定义事件
   methods: {
+    addFunction (__this) {
+      // TODO 添加摄像头
+
+      // 添加拖放事件
+      console.log('dropBox' + __this.class_count)
+      let boxed = document.getElementById('dropBox' + __this.class_count)
+      console.log(boxed)
+      boxed.addEventListener('dragover', function (e) {
+        e.stopPropagation()
+        e.preventDefault()
+      }, false)
+      boxed.addEventListener('drop', handleDrop, false)
+      function handleDrop (evt) {
+        evt.stopPropagation()
+        evt.preventDefault()
+        var files = evt.dataTransfer.files
+        for (var i = 0; i < files.length; i++) {
+          let f = files[i]
+          var t = f.type ? f.type : 'n/a'
+          var reader = new FileReader()
+          var isImg = isImage(t)
+          // 处理得到的图片
+          if (isImg) {
+            reader.onload = (function (theFile) {
+              return function (e) {
+                let drop_file = base64ToFile(e.target.result, theFile.name)
+                let my_img = $('<img src="' + e.target.result + '">')
+                my_img.attr('name', theFile.name)
+                my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
+                let id_str = evt.target.id
+                let actual_index_str = id_str.charAt(id_str.length - 1)
+                let class_index = parseInt(actual_index_str) - 1
+                my_img.attr('class', 'class' + actual_index_str + '_drop')
+                my_img.attr('id', 'imgDrop' + actual_index_str + '_' + __this.drop_index_list[class_index])
+                $('#img-wrapper' + actual_index_str).append(my_img)
+                __this.drop_file_list[class_index].push(drop_file)
+                __this.drop_index_list[class_index] += 1
+                __this.train_disable = !__this.check_train()
+              }
+            })(f)
+            reader.readAsDataURL(f)
+          } else {
+            alert('Please only drop image type files!')
+          }
+        }
+      }
+    },
+    // 添加一个类别
+    addClass () {
+      let array_index = this.class_count
+      this.class_count += 1
+      this.setting_bottom += 250
+      this.preview_bottom += 300
+      this.input_index_list.push(0)
+      this.input_file_list.push([])
+      this.drop_index_list.push(0)
+      this.drop_file_list.push([])
+      this.web_index_list.push(0)
+      this.web_file_list.push([])
+      this.is_camera_list.push(false)
+      this.video_list.push(null)
+      this.labels_list.push('Class' + this.class_count)
+      // 改变右边两列的位置
+      $('#setting').css({'bottom': this.setting_bottom + 'px'})
+      $('#preview').css({'bottom': this.preview_bottom + 'px'})
+      // 添加upload按钮
+      let temp_upload = $('<input type=\'file\' class="upload_file" multiple id="upload_file' +
+                          this.class_count + '" accept = \'image/jpeg,image/jpg,image/png,image/bmp\'/>')
+      $('#addTextForm').append(temp_upload)
+      setTimeout(() => { // 设置延迟执行
+        this.$options.methods.addFunction(this)
+      }, 1)
+    },
+    // 删除最后一个类
+    deleteClass () {
+      if (this.class_count <= 2) {
+        alert('Must have at least two classes')
+      } else {
+        this.setting_bottom -= 250
+        this.preview_bottom -= 300
+        // 改变右边两列的位置
+        $('#setting').css({'bottom': this.setting_bottom + 'px'})
+        $('#preview').css({'bottom': this.preview_bottom + 'px'})
+        let to_delete_box = document.getElementById('box' + this.class_count)
+        let to_delete_bar = document.getElementById('pre_div' + this.class_count)
+        let to_delete_upload = document.getElementById('upload_file' + this.class_count)
+        if (to_delete_box != null && to_delete_bar != null && to_delete_upload != null) {
+          to_delete_box.parentNode.removeChild(to_delete_box)
+          to_delete_bar.parentNode.removeChild(to_delete_bar)
+          to_delete_upload.parentNode.removeChild(to_delete_upload)
+          this.input_index_list.pop()
+          this.input_file_list.pop()
+          this.drop_index_list.pop()
+          this.drop_file_list.pop()
+          this.web_index_list.pop()
+          this.web_file_list.pop()
+          this.is_camera_list.pop()
+          this.labels_list.pop()
+          this.video_list.pop()
+          this.class_count -= 1
+        } else {
+          alert('ERROR! Delete failed!')
+        }
+      }
+    },
     changeMode (e) {
       if (e === 'web-file') {
-        this.is_camera1 = false
-        this.is_camera2 = false
-      } else if (e === 'class1-change') {
+        for (let i = 0; i < this.is_camera_list.length; i++) {
+          this.is_camera_list[i] = false
+        }
+      } else {
         this.is_cam = false
-        this.is_camera2 = false
-      } else if (e === 'class2-change') {
-        this.is_cam = false
-        this.is_camera1 = false
+        let change_index = e - 1
+        for (let i = 0; i < this.is_camera_list.length; i++) {
+          if (i != change_index) {
+            this.is_camera_list[i] = false
+          }
+        }
       }
     },
     // 检查用户ID是否可用
@@ -1305,11 +1363,97 @@ export default {
             } else if (res.data === 'TRUE') {
               this.check_ID_pass = true
               this.train_disable = !this.check_train()
+              console.log(this.video_list)
+              for (let i = 1; i <= this.class_count; i++) {
+                this.video_list[i - 1] = document.getElementById('class' + i + '_video')
+              }
+              console.log(this.video_list)
+              this.thisCancas = document.getElementById('_canvas')
+              this.thisContext = this.thisCancas.getContext('2d')
+              this.thisVideo = document.getElementById('_video')
+
+              if (navigator.mediaDevices.getUserMedia) {
+                // 最新的标准API
+                navigator.mediaDevices.getUserMedia({video: {width: 1280, height: 720}}).then(success).catch(error)
+              } else if (navigator.webkitGetUserMedia) {
+                // webkit核心浏览器
+                navigator.webkitGetUserMedia({video: {width: 1280, height: 720}}, success, error)
+              } else if (navigator.mozGetUserMedia) {
+                // firfox浏览器
+                navigator.mozGetUserMedia({video: {width: 1280, height: 720}}, success, error)
+              } else if (navigator.getUserMedia) {
+                // 旧版API
+                navigator.getUserMedia({video: {width: 1280, height: 720}}, success, error)
+              }
+
+              function success (stream) {
+                // 兼容webkit核心浏览器
+                // let CompatibleURL = window.URL || window.webkitURL;
+
+                // 将视频流设置为video元素的源
+                for (let i = 0; i < _this.video_list.length; i++) {
+                  _this.video_list[i].srcObject = stream
+                  _this.video_list[i].play()
+                }
+                _this.thisVideo.srcObject = stream
+                _this.thisVideo.play()
+              }
+
+              function error (error) {
+                alert(`访问用户媒体设备失败${error.name}, ${error.message}`)
+              }
             }
           })
           .catch((error) => {
             console.error(error)
           })
+      }
+      let __this = this
+      /*
+      拖拽事件监听========================================
+      */
+      var Boxed = document.getElementsByClassName('dropBox')
+      for (var i = 0; i < Boxed.length; i++) {
+        Boxed[i].addEventListener('dragover', function (e) {
+          e.stopPropagation()
+          e.preventDefault()
+        }, false)
+        Boxed[i].addEventListener('drop', handleDrop, false)
+      }
+      function handleDrop (evt) {
+        evt.stopPropagation()
+        evt.preventDefault()
+        var files = evt.dataTransfer.files
+        for (var i = 0; i < files.length; i++) {
+          let f = files[i]
+          var t = f.type ? f.type : 'n/a'
+          var reader = new FileReader()
+          var isImg = isImage(t)
+          // 处理得到的图片
+          if (isImg) {
+            reader.onload = (function (theFile) {
+              return function (e) {
+                let drop_file = base64ToFile(e.target.result, theFile.name)
+                let my_img = $('<img src="' + e.target.result + '">')
+                my_img.attr('name', theFile.name)
+                my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
+                // TODO
+                let id_str = evt.target.id
+                let actual_index_str = id_str.charAt(id_str.length - 1)
+                let class_index = parseInt(actual_index_str) - 1
+                my_img.attr('class', 'class' + actual_index_str + '_drop')
+                my_img.attr('id', 'imgDrop' + actual_index_str + '_' + __this.drop_index_list[class_index])
+                $('#img-wrapper' + actual_index_str).append(my_img)
+                __this.drop_file_list[class_index].push(drop_file)
+                __this.drop_index_list[class_index] += 1
+                __this.train_disable = !__this.check_train()
+              }
+            })(f)
+            reader.readAsDataURL(f)
+          } else {
+            alert('Please only drop image type files!')
+          }
+        }
       }
     },
 
@@ -1333,9 +1477,11 @@ export default {
       const model_path = 'http://127.0.0.1:5000/modelExport'
       let uploaddata = new FormData()// 创建form对象
       uploaddata.append('userID', this.user_ID)
+      uploaddata.append('count', this.class_count)
       uploaddata.append('model_type', this.export_type)
-      uploaddata.append('label1', this.label1_value)
-      uploaddata.append('label2', this.label2_value)
+      for (let i = 1; i <= this.class_count; i++) {
+        uploaddata.append('label' + i, this.labels_list[i - 1])
+      }
       let config = {responseType: 'blob'}
       axios.post(model_path, uploaddata, config)
         .then((res) => {
@@ -1395,29 +1541,21 @@ export default {
       }
       axios.post(path, uploaddata, config)
         .then((res) => {
-          console.log(res.data)
-          let class1_pre = (res.data[0] * 100)
-          let class2_pre = (res.data[1] * 100)
-          let offset1 = 0
-          let offset2 = 0
-          if (class1_pre <= 20) {
-            offset1 = 0
-          } else {
-            offset1 = 200 * (class1_pre / 100) - 40
+          console.log(res.data.length)
+          for (let i = 0; i < res.data.length; i++) {
+            let percentage = res.data[i] * 100
+            let offset = 0
+            if (percentage <= 20) {
+              offset = 0
+            } else {
+              offset = 200 * (percentage / 100) - 40
+            }
+            let actual_index = i + 1
+            let class_display = document.getElementById('outcomename' + actual_index)
+            class_display.innerText = percentage + '%'
+            $('#outcomename' + actual_index).css({'left': offset})
+            $('#outcome' + actual_index).css({'width': percentage + '% '})
           }
-          if (class2_pre <= 20) {
-            offset2 = 0
-          } else {
-            offset2 = 200 * (class2_pre / 100) - 40
-          }
-          let class1_display = document.getElementById('orangename1')
-          let class2_display = document.getElementById('orangename2')
-          class1_display.innerHTML = class1_pre + '%'
-          $('#orangename1').css({'left': offset1})
-          $('#orangename2').css({'left': offset2})
-          class2_display.innerHTML = class2_pre + '%'
-          $('#orange1').css({'width': class1_pre + '%'})
-          $('#orange2').css({'width': class2_pre + '%'})
           loading.close()
         })
         .catch((error) => {
@@ -1426,31 +1564,37 @@ export default {
     },
     // 检查输入和label是否满足可以训练的条件
     check_train () {
-      let class1_input_imgs = document.getElementsByClassName('class1_input')
-      let class2_input_imgs = document.getElementsByClassName('class2_input')
-      let class1_drop_imgs = document.getElementsByClassName('class1_drop')
-      let class2_drop_imgs = document.getElementsByClassName('class2_drop')
-      let class1_web_imgs = document.getElementsByClassName('class1_web')
-      let class2_web_imgs = document.getElementsByClassName('class2_web')
-      let valid_input_index1 = get_valid_indexs(class1_input_imgs)
-      let valid_input_index2 = get_valid_indexs(class2_input_imgs)
-      let valid_drop_index1 = get_valid_indexs(class1_drop_imgs)
-      let valid_drop_index2 = get_valid_indexs(class2_drop_imgs)
-      let valid_web_index1 = get_valid_indexs(class1_web_imgs)
-      let valid_web_index2 = get_valid_indexs(class2_web_imgs)
-      return this.check_ID_pass && (valid_input_index1.length !== 0 || valid_drop_index1.length !== 0 || valid_web_index1.length !== 0) && (valid_input_index2.length !== 0 || valid_drop_index2.length !== 0 || valid_web_index2.length !== 0) && (this.label1_value !== '' && this.label2_value !== '')
+      // 检查label
+      for (let i = 0; i < this.class_count; i++) {
+        if (this.labels_list[i] === '') {
+          return false
+        }
+      }
+      // 检查照片
+      for (let i = 1; i <= this.class_count; i++) {
+        let input_imgs = document.getElementsByClassName('class' + i + '_input')
+        let drop_imgs = document.getElementsByClassName('class' + i + '_drop')
+        let web_imgs = document.getElementsByClassName('class' + i + '_web')
+        let valid_input_index = get_valid_indexs(input_imgs)
+        let valid_drop_index = get_valid_indexs(drop_imgs)
+        let valid_web_index = get_valid_indexs(web_imgs)
+        if (valid_input_index.length === 0 && valid_drop_index.length === 0 && valid_web_index.length === 0) {
+          return false
+        }
+      }
+      return this.check_ID_pass
     },
     label_change () {
       this.train_disable = !this.check_train()
     },
     // 根据点击上传按钮触发input
     change_input (e) {
-      if (e.target.id === 'btn1') {
-        return $('#upload_file1').click()
-      } else if (e.target.id === 'btn2') {
-        return $('#upload_file2').click()
-      } else if (e.target.id === 'btn3') {
+      if (e.target.id === 'fileOne_btn') {
         return $('#fileOne').click()
+      } else {
+        let id_str = e.target.id
+        let actual_index_str = id_str.charAt(id_str.length - 1)
+        return $('#upload_file' + actual_index_str).click()
       }
     },
 
@@ -1458,7 +1602,7 @@ export default {
     setImg (e) {
       let target = e.target
       if (target.id === 'fileOne') {
-        $('#img-wrapper3').attr('src', window.URL.createObjectURL(target.files[0]))
+        $('#img-wrapperUp').attr('src', window.URL.createObjectURL(target.files[0]))
         this.predict_upload_file = target.files[0]
         this.predict_disable = false
       } else {
@@ -1467,19 +1611,14 @@ export default {
           my_img.attr('src', window.URL.createObjectURL(target.files[i]))
           my_img.attr('name', target.files[i].name)
           my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'})
-          if (target.id === 'upload_file1') {
-            my_img.attr('id', 'imgInput1_' + this.class1_input_index)
-            this.class1_input_index += 1
-            my_img.attr('class', 'class1_input')
-            $('#img-wrapper1').append(my_img)
-            this.class1_input_file.push(target.files[i])
-          } else if (target.id === 'upload_file2') {
-            my_img.attr('id', 'imgInput2_' + this.class2_input_index)
-            this.class2_input_index += 1
-            my_img.attr('class', 'class2_input')
-            $('#img-wrapper2').append(my_img)
-            this.class2_input_file.push(target.files[i])
-          }
+          let id_str = target.id
+          let actual_index_str = id_str.charAt(id_str.length - 1)
+          let class_index = parseInt(actual_index_str) - 1
+          my_img.attr('id', 'imgInput' + actual_index_str + '_' + this.input_index_list[class_index])
+          this.input_index_list[class_index] += 1
+          my_img.attr('class', 'class' + actual_index_str + '_input')
+          $('#img-wrapper' + actual_index_str).append(my_img)
+          this.input_file_list[class_index].push(target.files[i])
         }
       }
       this.train_disable = !this.check_train()
@@ -1492,54 +1631,32 @@ export default {
       }
       this.train_disable = !this.check_train()
     },
-    setImage1 () {
-      // 点击，canvas画图
-      this.thisContext1.drawImage(this.thisVideo1, 0, 0, 1280, 720)
-      // 获取图片base64链接
-      var image = this.thisCancas1.toDataURL('image/jpeg', 1)
-      this.imgSrc1 = image
-      this.$emit('refreshDataList', this.imgSrc1)
-      let web_file = base64ToFile(this.imgSrc1, 'imgWeb1_' + this.class1_web_index + '.jpeg')
-      let my_img = $('<img src="' + this.imgSrc1 + '">')
-      my_img.attr('name', 'imgWeb_' + this.class1_web_index)
-      my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
-      my_img.attr('class', 'class1_web')
-      my_img.attr('id', 'imgWeb_' + this.class1_web_index)
-      $('#img-wrapper1').append(my_img)
-      this.class1_web_file.push(web_file)
-      this.class1_web_index += 1
-      this.train_disable = !this.check_train()
-    },
-    setImage2 () {
-      // 点击，canvas画图
-      this.thisContext2.drawImage(this.thisVideo2, 0, 0, 1280, 720)
-      // 获取图片base64链接
-      var image = this.thisCancas2.toDataURL('image/jpeg', 1)
-      this.imgSrc2 = image
-      this.$emit('refreshDataList', this.imgSrc2)
-      let web_file = base64ToFile(this.imgSrc2, 'imgWeb2_' + this.class2_web_index + '.jpeg')
-      let my_img = $('<img src="' + this.imgSrc2 + '">')
-      my_img.attr('name', 'imgWeb_' + this.class2_web_index)
-      my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
-      my_img.attr('class', 'class2_web')
-      my_img.attr('id', 'imgWeb_' + this.class2_web_index)
-      $('#img-wrapper2').append(my_img)
-      this.class2_web_file.push(web_file)
-      this.class2_web_index += 1
-      this.train_disable = !this.check_train()
-    },
-    setImage3 () {
+    // 相机获取照片
+    drawImg (e) {
       // 点击，canvas画图
       this.thisContext.drawImage(this.thisVideo, 0, 0, 1280, 720)
       // 获取图片base64链接
       var image = this.thisCancas.toDataURL('image/jpeg', 1)
       this.imgSrc = image
-      $('#img-wrapper4').attr('src', this.imgSrc)
-      this.predict_web_file = base64ToFile(this.imgSrc, 'prediction.jpeg')
       this.$emit('refreshDataList', this.imgSrc)
-      this.predict_disable = false
+      if (e === 'predict') {
+        $('#img-wrapperWeb').attr('src', this.imgSrc)
+        this.predict_web_file = base64ToFile(this.imgSrc, 'prediction.jpeg')
+        this.predict_disable = false
+      } else {
+        let index = e - 1
+        let web_file = base64ToFile(this.imgSrc, 'imgWeb' + e + '_' + this.web_index_list[index] + '.jpeg')
+        let my_img = $('<img src="' + this.imgSrc + '">')
+        my_img.attr('name', 'imgWeb_' + this.web_index_list[index])
+        my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
+        my_img.attr('class', 'class' + e + '_web')
+        my_img.attr('id', 'imgWeb' + e + '_' + this.web_index_list[index])
+        $('#img-wrapper' + e).append(my_img)
+        this.web_file_list[index].push(web_file)
+        this.web_index_list[index] += 1
+        this.train_disable = !this.check_train()
+      }
     },
-
     // 提交信息到后台
     submit () {
       let loading = this.$loading({
@@ -1551,46 +1668,65 @@ export default {
       const path = 'http://127.0.0.1:5000/imagesTraining'
       // const path = 'http://192.168.1.112:5000/imagesTraining'
       let uploaddata = new FormData()// 创建form对象
-      let class1_input_imgs = document.getElementsByClassName('class1_input')
-      let class2_input_imgs = document.getElementsByClassName('class2_input')
-      let class1_drop_imgs = document.getElementsByClassName('class1_drop')
-      let class2_drop_imgs = document.getElementsByClassName('class2_drop')
-      let class1_web_imgs = document.getElementsByClassName('class1_web')
-      let class2_web_imgs = document.getElementsByClassName('class2_web')
-      let valid_input_index1 = get_valid_indexs(class1_input_imgs)
-      let valid_input_index2 = get_valid_indexs(class2_input_imgs)
-      let valid_drop_index1 = get_valid_indexs(class1_drop_imgs)
-      let valid_drop_index2 = get_valid_indexs(class2_drop_imgs)
-      let valid_web_index1 = get_valid_indexs(class1_web_imgs)
-      let valid_web_index2 = get_valid_indexs(class2_web_imgs)
-      let valid_input_files1 = get_valid_files(this.class1_input_file, valid_input_index1)
-      let valid_input_files2 = get_valid_files(this.class2_input_file, valid_input_index2)
-      let valid_drop_files1 = get_valid_files(this.class1_drop_file, valid_drop_index1)
-      let valid_drop_files2 = get_valid_files(this.class2_drop_file, valid_drop_index2)
-      let valid_web_files1 = get_valid_files(this.class1_web_file, valid_web_index1)
-      let valid_web_files2 = get_valid_files(this.class2_web_file, valid_web_index2)
-      let class1_valid_imgs = valid_input_files1.concat(valid_drop_files1).concat(valid_web_files1)
-      let class2_valid_imgs = valid_input_files2.concat(valid_drop_files2).concat(valid_web_files2)
-      if (class1_valid_imgs.length === 0) {
-        alert('ERROR! Please add Class1 image!')
-      } else if (class2_valid_imgs.length === 0) {
-        alert('ERROR! Please add Class2 image!')
-      } else if (this.label1_value === '') {
-        alert('ERROR! Please edit Class1 Name!')
-      } else if (this.label2_value === '') {
-        alert('ERROR! Please edit Class2 Name!')
-      } else {
-        for (let i = 0; i < class1_valid_imgs.length; i++) {
-          uploaddata.append('label1_imgs', class1_valid_imgs[i])
+      let input_imgs_list = []
+      let drop_imgs_list = []
+      let web_imgs_list = []
+      for (let i = 1; i <= this.class_count; i++) {
+        let class_input_imgs = document.getElementsByClassName('class' + i + '_input')
+        input_imgs_list.push(class_input_imgs)
+        let class_drop_imgs = document.getElementsByClassName('class' + i + '_drop')
+        drop_imgs_list.push(class_drop_imgs)
+        let class_web_imgs = document.getElementsByClassName('class' + i + '_web')
+        web_imgs_list.push(class_web_imgs)
+      }
+      let valid_input_index_list = []
+      let valid_drop_index_list = []
+      let valid_web_index_list = []
+      for (let i = 0; i < this.class_count; i++) {
+        let valid_input_index = get_valid_indexs(input_imgs_list[i])
+        valid_input_index_list.push(valid_input_index)
+        let valid_drop_index = get_valid_indexs(drop_imgs_list[i])
+        valid_drop_index_list.push(valid_drop_index)
+        let valid_web_index = get_valid_indexs(web_imgs_list[i])
+        valid_web_index_list.push(valid_web_index)
+      }
+      let valid_input_files_list = []
+      let valid_drop_files_list = []
+      let valid_web_files_list = []
+      for (let i = 0; i < this.class_count; i++) {
+        let valid_input_files = get_valid_files(this.input_file_list[i], valid_input_index_list[i])
+        valid_input_files_list.push(valid_input_files)
+        let valid_drop_files = get_valid_files(this.drop_file_list[i], valid_drop_index_list[i])
+        valid_drop_files_list.push(valid_drop_files)
+        let valid_web_files = get_valid_files(this.web_file_list[i], valid_web_index_list[i])
+        valid_web_files_list.push(valid_web_files)
+      }
+      let valid_imgs_list = []
+      for (let i = 0; i < this.class_count; i++) {
+        let valid_imgs = valid_input_files_list[i].concat(valid_drop_files_list[i]).concat(valid_web_files_list[i])
+        valid_imgs_list.push(valid_imgs)
+      }
+      let is_class_no_img = false
+      for (let i = 0; i < this.class_count; i++) {
+        if (valid_imgs_list[i].length === 0) {
+          let actual_index = i + 1
+          alert('ERROR! Please add Class' + actual_index + 'image!')
+          is_class_no_img = true
         }
-        for (let i = 0; i < class2_valid_imgs.length; i++) {
-          uploaddata.append('label2_imgs', class2_valid_imgs[i])
+      }
+      // 所有类别都有照片
+      if (!is_class_no_img) {
+        for (let i = 0; i < this.class_count; i++) {
+          let actual_index = i + 1
+          for (let j = 0; j < valid_imgs_list[i].length; j++) {
+            uploaddata.append('label' + actual_index + '_imgs', valid_imgs_list[i][j])
+          }
+          uploaddata.append('label', this.labels_list[i])
         }
         let epoch = document.getElementById('epochs').value
         let batch = document.getElementById('batch').value
         let learningRate = document.getElementById('learning_rate').value
-        uploaddata.append('label', this.label1_value)
-        uploaddata.append('label', this.label2_value)
+        uploaddata.append('count', this.class_count)
         uploaddata.append('epoch', epoch)
         uploaddata.append('batch', batch)
         uploaddata.append('learning_rate', learningRate)
@@ -1630,6 +1766,27 @@ export default {
   created () {
     // 绑定清除文件夹事件
     window.addEventListener('beforeunload', e => this.leave_func(e))
+    // 初始化data变量
+    let _this = this
+    _this.class_count = 2
+    _this.input_index_list.push(0)
+    _this.input_index_list.push(0)
+    _this.input_file_list.push([])
+    _this.input_file_list.push([])
+    _this.drop_index_list.push(0)
+    _this.drop_index_list.push(0)
+    _this.drop_file_list.push([])
+    _this.drop_file_list.push([])
+    _this.web_index_list.push(0)
+    _this.web_index_list.push(0)
+    _this.web_file_list.push([])
+    _this.web_file_list.push([])
+    _this.labels_list.push('Class1')
+    _this.labels_list.push('Class2')
+    _this.is_camera_list.push(false)
+    _this.is_camera_list.push(false)
+    _this.video_list.push(null)
+    _this.video_list.push(null)
   },
   mounted () {
     let _this = this
@@ -1647,106 +1804,6 @@ export default {
         }
       }, 0)
     })
-    this.class1_orange = document.getElementById('orange1')
-    this.class2_orange = document.getElementById('orange2')
-    this.class1_orangename = document.getElementById('orangename1')
-    this.class2_orangename = document.getElementById('orangename2')
-
-    this.thisCancas1 = document.getElementById('class1_canvas')
-    this.thisContext1 = this.thisCancas1.getContext('2d')
-    this.thisVideo1 = document.getElementById('class1_video')
-    this.thisCancas2 = document.getElementById('class2_canvas')
-    this.thisContext2 = this.thisCancas2.getContext('2d')
-    this.thisVideo2 = document.getElementById('class2_video')
-    this.thisCancas = document.getElementById('_canvas')
-    this.thisContext = this.thisCancas.getContext('2d')
-    this.thisVideo = document.getElementById('_video')
-
-    if (navigator.mediaDevices.getUserMedia) {
-      // 最新的标准API
-      navigator.mediaDevices.getUserMedia({video: {width: 1280, height: 720}}).then(success).catch(error)
-    } else if (navigator.webkitGetUserMedia) {
-      // webkit核心浏览器
-      navigator.webkitGetUserMedia({video: {width: 1280, height: 720}}, success, error)
-    } else if (navigator.mozGetUserMedia) {
-      // firfox浏览器
-      navigator.mozGetUserMedia({video: {width: 1280, height: 720}}, success, error)
-    } else if (navigator.getUserMedia) {
-      // 旧版API
-      navigator.getUserMedia({video: {width: 1280, height: 720}}, success, error)
-    }
-
-    function success (stream) {
-      // 兼容webkit核心浏览器
-      // let CompatibleURL = window.URL || window.webkitURL;
-
-      // 将视频流设置为video元素的源
-      console.log(stream)
-
-      // video.src = CompatibleURL.createObjectURL(stream);
-      _this.thisVideo1.srcObject = stream
-      _this.thisVideo1.play()
-      _this.thisVideo2.srcObject = stream
-      _this.thisVideo2.play()
-      _this.thisVideo.srcObject = stream
-      _this.thisVideo.play()
-    }
-
-    function error (error) {
-      alert(`访问用户媒体设备失败${error.name}, ${error.message}`)
-    }
-
-    var __this = this
-    /*
-    拖拽事件监听========================================
-    */
-    var Boxed = document.getElementsByClassName('dropBox')
-    for (var i = 0; i < Boxed.length; i++) {
-      Boxed[i].addEventListener('dragover', function (e) {
-        e.stopPropagation()
-        e.preventDefault()
-      }, false)
-      Boxed[i].addEventListener('drop', handleDrop, false)
-    }
-    function handleDrop (evt) {
-      evt.stopPropagation()
-      evt.preventDefault()
-      var files = evt.dataTransfer.files
-      for (var i = 0; i < files.length; i++) {
-        let f = files[i]
-        var t = f.type ? f.type : 'n/a'
-        var reader = new FileReader()
-        var isImg = isImage(t)
-        // 处理得到的图片
-        if (isImg) {
-          reader.onload = (function (theFile) {
-            return function (e) {
-              let drop_file = base64ToFile(e.target.result, theFile.name)
-              let my_img = $('<img src="' + e.target.result + '">')
-              my_img.attr('name', theFile.name)
-              my_img.css({'width': '50px', 'height': '50px', 'margin': '5px 5px 5px 5px'}) // 添加样式，由于vue的执行机制，页面加载的时候img标签还没有生成，直接写在style样式会不生效
-              if (evt.target.id === 'dropBox1') {
-                my_img.attr('class', 'class1_drop')
-                my_img.attr('id', 'imgDrop1_' + __this.class1_drop_index)
-                $('#img-wrapper1').append(my_img)
-                __this.class1_drop_file.push(drop_file)
-                __this.class1_drop_index += 1
-              } else if (evt.target.id === 'dropBox2') {
-                my_img.attr('class', 'class2_drop')
-                my_img.attr('id', 'imgDrop2_' + __this.class2_drop_index)
-                $('#img-wrapper2').append(my_img)
-                __this.class2_drop_file.push(drop_file)
-                __this.class2_drop_index += 1
-              }
-              __this.train_disable = !__this.check_train()
-            }
-          })(f)
-          reader.readAsDataURL(f)
-        } else {
-          alert('Please only drop image type files!')
-        }
-      }
-    }
   },
   destroyed () {
     // 卸载清除文件夹事件

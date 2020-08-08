@@ -22,7 +22,7 @@ def process_img(files):
         file_storage = f.read()
         byte_stream = io.BytesIO(file_storage)
         img = Image.open(byte_stream)
-        img = img.convert('RGB')
+        img = img.convert("YCbCr")
         img = ImageOps.fit(img, (HEIGHT, WIDTH), Image.ANTIALIAS)
         img_data = np.asarray(img, dtype=np.float32)
         img_data = img_data / 127.0 - 1
@@ -30,13 +30,13 @@ def process_img(files):
     return imgs_data
 
 
-def create_labels(total, boundary):
+def create_labels(each_class_num):
     labels = []
-    for i in range(total):
-        if i < boundary:
-            labels.append(0)
-        else:
-            labels.append(1)
+    current = 0
+    for boundary in each_class_num:
+        for i in range(boundary):
+            labels.append(current)
+        current += 1
     return labels
 
 
@@ -60,15 +60,19 @@ def check_id():
 
 @app.route('/imagesTraining', methods=['POST'])
 def get_img():
-    class2_files = request.files.getlist('label2_imgs')
-    all_files = request.files.getlist('label1_imgs')
-    for i in range(len(class2_files)):
-        all_files.append(class2_files[i])
+    each_class_num = []
+    all_files = []
+    class_count = request.form.get('count')
+    for i in range(int(class_count)):
+        index = i + 1
+        one_class_files = request.files.getlist('label' + str(index) + '_imgs')
+        for file in one_class_files:
+            all_files.append(file)
+        each_class_num.append(len(one_class_files))
     input_data = process_img(all_files)
-    label = create_labels(len(all_files), len(request.files.getlist('label1_imgs')))
+    label = create_labels(each_class_num)
     epoch, batch_size, learning_rate, user_id = get_parameters(request.form)
-    imageClassifier.training(np.array(input_data), np.array(label), int(epoch), int(batch_size), float(learning_rate), user_id)
-
+    imageClassifier.training(np.array(input_data), np.array(label), int(epoch), int(batch_size), float(learning_rate), user_id, class_count)
     return jsonify('上传成功')
 
 
@@ -85,7 +89,9 @@ def predict_img():
     h, w, c = img_data.shape
     img_data = img_data.reshape((1, h, w, c))
     prediction = imageClassifier.prediction(img_data, user_id)
-    result = [round(float(prediction[0][0])), round(float(prediction[0][1]))]
+    result = []
+    for one in prediction[0]:
+        result.append(round(float(one)))
     return jsonify(result)
 
 
@@ -107,15 +113,18 @@ def export_model():
 @app.route('/labelExport', methods=['POST'])
 def export_label():
     user_id = request.form.get('userID')
-    label1 = request.form.get('label1')
-    label2 = request.form.get('label2')
+    class_num = int(request.form.get('count'))
+    labels = []
+    for i in range(class_num):
+        actual_index = str(i + 1)
+        labels.append(request.form.get('label' + actual_index))
     path = user_id + '/labels.txt'
     with open(path, 'w+') as file:
         # 清空文件内容
         file.seek(0)
         file.truncate()
-        file.write(label1 + '\n')
-        file.write(label2 + '\n')
+        for label in labels:
+            file.write(label + '\n')
         file.close()
     try:
         return send_from_directory(app.root_path, path, as_attachment=True)
