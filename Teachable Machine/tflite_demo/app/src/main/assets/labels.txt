@@ -1,0 +1,10 @@
+005.Alaskan_malamute
+006.American_eskimo_dog
+048.Chihuahua
+050.Chinese_shar-pei
+059.Doberman_pinscher
+076.Golden_retriever
+104.Miniature_schnauzer
+113.Old_english_sheepdog
+124.Poodle
+129.Tibetan_mastiff
