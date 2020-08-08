@@ -2,21 +2,22 @@ import tensorflow as tf
 from tensorflow.keras import layers, models, optimizers, backend
 import numpy as np
 import os
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
 
 # 不使用GPU
-# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
+
+# 使用mobilenet_v2 速度很慢
 '''
 def create_model(h, w, c):
-    model = models.Sequential()
-    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(h, w, c)))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    model.add(layers.Flatten())
-    model.add(layers.Dense(64, activation='relu'))
-    model.add(layers.Dense(2))
+    base_model = MobileNetV2(include_top=False)
+    inputs = tf.keras.layers.Input(shape=(h, w, c))
+    x = base_model(inputs)
+    x = layers.Flatten()(x)
+    x = layers.Dense(256, activation='relu')(x)
+    outputs = layers.Dense(class_count, activation='softmax')(x)
+    model = models.Model(inputs=inputs, outputs=outputs)
     return model
 '''
 
@@ -39,6 +40,7 @@ def training(input_data, label, epoch, batch_size, learning_rate, user_id, class
     backend.clear_session()
     _, h, w, c = input_data.shape
     model = create_model(h, w, c, class_count)
+    model.summary()
     optimizer = optimizers.Adam(learning_rate=learning_rate)
     model.compile(optimizer=optimizer,
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),

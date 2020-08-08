@@ -22,8 +22,9 @@ def process_img(files):
         file_storage = f.read()
         byte_stream = io.BytesIO(file_storage)
         img = Image.open(byte_stream)
-        img = img.convert("YCbCr")
-        img = ImageOps.fit(img, (HEIGHT, WIDTH), Image.ANTIALIAS)
+        img = img.convert("RGB")
+        img = img.resize((HEIGHT, WIDTH))
+        # img = ImageOps.fit(img, (HEIGHT, WIDTH), Image.ANTIALIAS)
         img_data = np.asarray(img, dtype=np.float32)
         img_data = img_data / 127.0 - 1
         imgs_data.append(img_data)
@@ -82,7 +83,8 @@ def predict_img():
     file_storage = f.read()
     byte_stream = io.BytesIO(file_storage)
     img = Image.open(byte_stream)
-    img = ImageOps.fit(img, (HEIGHT, WIDTH), Image.ANTIALIAS)
+    img = img.resize((HEIGHT, WIDTH))
+    # img = ImageOps.fit(img, (HEIGHT, WIDTH), Image.ANTIALIAS)
     user_id = request.form.get('userID')
     img_data = np.asarray(img, dtype=np.float32)
     img_data = img_data / 127.0 - 1
